@@ -1,0 +1,25 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fusandy/node.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fusandy/node.js/issues"
+  },
+  "homepage": "https://github.com/fusandy/node.js#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^14.3.0",
+    "es-checker": "^1.4.2",
+    "express": "^4.17.2"
+  }
+}

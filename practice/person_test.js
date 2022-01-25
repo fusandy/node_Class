@@ -1,3 +1,5 @@
+// require可以動態匯入，不須放在檔案的最開頭
+
 // 匯入單個
 // const Person = require('./person');
 // const p2 = new Person('Peter',25);
