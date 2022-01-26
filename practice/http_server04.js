@@ -11,12 +11,21 @@ const server = http.createServer((req, res) => {
     });
     
     // fsPromises.writeFile(file, data[, options])
-    fs.writeFile(__dirname+'/headers2.txt', JSON.stringify(req.headers,null,4))
+    // fs.writeFile(__dirname+'/headers2.txt', JSON.stringify(req.headers,null,4))
+    // .then(()=>{
+    //     res.end('ok');
+    // }).catch(error=>{
+    //     res.end('error');
+    // });
+
+    fs.readFile(__dirname+'/headers3.txt')
     .then(()=>{
         res.end('ok');
     }).catch(error=>{
         res.end('error');
     });
+
+
 });
 
 
