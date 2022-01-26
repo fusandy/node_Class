@@ -7,7 +7,10 @@ const express = require('express');
 // 建立web server物件
 const app = express();
 
-// 啟動路徑是專案資料夾，所以直接打public就可以找到該資料夾
+// 主程式設定註冊樣板引擎
+app.set('view engine', 'ejs');
+
+// 啟動路徑是專案資料夾，所以直接打public就可以找到該資料夾，引用靜態內容的順序要放在上面
 app.use(express.static('public'));
 
 // app.get('/a.html', function (req, res) {
@@ -17,7 +20,7 @@ app.use(express.static('public'));
 // 路由
 // 方法要對、路徑要對，才會接收
 app.get('/', function (req, res) {
-  res.send('Hello World')
+  res.render('home', {name:'Sandy'});
 });
 
 console.log("server is on: http://localhost:3000/")

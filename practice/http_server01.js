@@ -1,4 +1,7 @@
 // 簡易web server
+// 用http模組模擬一個server
+
+// module要require進來才能用
 const http = require('http');
 
 // client request 
@@ -6,9 +9,12 @@ const http = require('http');
 
 // apache 會自動配發用戶要看什麼內容
 // node 不會自動配發，所有用戶有request都會進到經過這支server
+
 // 先載入原始碼，再編譯，如果server沒有停下來，但是中間編譯有變動，需要重新啟動server
 const server = http.createServer((req, res) => {
     //callback function
+
+    // 回應的時候要寫檔頭
     res.writeHead(200, {
         'Content-Type': 'text/html'
     });
