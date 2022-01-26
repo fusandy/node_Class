@@ -13,7 +13,7 @@ const server = http.createServer(async(req, res) => {
     try {
         await fs.writeFile(__dirname+'/headers2.txt', JSON.stringify(req.headers,null,4));
     } catch(ex){
-        return res.end('error:', ex);
+        return res.end('error:'+ ex);
     }
     
     res.end('ok');
