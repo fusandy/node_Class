@@ -22,8 +22,20 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
 
   // res.send('<h1>Hello World</h1>');
-  res.render('home', {name:'Sandy'});
+  res.render('home', {name:'Hello World'});
 });
+
+// 如果require是json檔，可以不用寫副檔名，js檔也是
+// require要寫相對路徑
+app.get('/json-sales', function (req, res) {
+  const sales = require('./data/sales.json')  // require進來，自動json.parse轉變為陣列
+  // TODO: 陣列排序
+  console.log(sales);
+  // res.send(sales[0].name);
+  // res.send('200');
+  res.render('json-sales', {sales});
+});
+
 
 // *** 此段放在所有路由設定的後面 ***
 // use : 接收所有的方法
@@ -36,5 +48,5 @@ app.use((req,res)=>{
 // server偵聽，偵聽之後的callback function可寫可不寫
 const port = process.env.PORT || 3001;
 app.listen(port, function(){
-  console.log(`server started: ${port} - `, new Date());
+  console.log(`server started: ${port} - `, new Date().toLocaleString('zh-TW', {timeZone: 'Asia/Taipei'}));
 })

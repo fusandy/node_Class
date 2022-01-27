@@ -1,0 +1,6 @@
+# Response
+
+res.end()
+res.send()
+res.json()
+res.render()

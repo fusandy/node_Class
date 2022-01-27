@@ -1,0 +1,13 @@
+<%- include('parts/html-head') %>
+<%- include('parts/navbar') %>
+
+
+<div class="container">
+    <% for(let i of sales){ %>
+        <div><%= i.name %></div>  
+    <% } %>
+</div>
+
+<%- include('parts/scripts') %>
+<%- include('parts/html-foot') %>
+
