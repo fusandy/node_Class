@@ -3,9 +3,29 @@
 
 
 <div class="container">
-    <% for(let i of sales){ %>
-        <div><%= i.name %></div>  
-    <% } %>
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">ID</th>
+          </tr>
+        </thead>
+        <tbody>
+            <% for(let i of sales){ %>
+            <tr>
+                <td><%= i.name %></td>
+                <td><%= i.age %></td>
+                <td><%= i.id %></td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+
+
+
+
+
 </div>
 
 <%- include('parts/scripts') %>
