@@ -1,1 +1,14 @@
-<h2><%= name %></h2>
+<%# 樣板路徑都不要用斜線開頭 %>
+<%# 副檔名不用給 %>
+
+<%- include('parts/html-head') %>
+<%- include('parts/navbar') %>
+
+
+<div class="container">
+    <h2><%= name %></h2>
+</div>
+
+<%- include('parts/scripts') %>
+<%- include('parts/html-foot') %>
+
