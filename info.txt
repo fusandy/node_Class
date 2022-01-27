@@ -4,11 +4,14 @@ res.end()
 res.send()
 res.json()
 res.render()
+res.redirect()轉向 同PHP header("Location: index_.php");
 
 
 #輸入的資料
 req.query  #拿到query string (GET)
 req.body #拿到表單的資料，放在body (POST)
 
+
+query string的Content-Type也是urlencoded
 
 middleware 中介軟體

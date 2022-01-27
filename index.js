@@ -3,7 +3,13 @@ console.log(process.env.NODE_ENV);
 require('dotenv').config();
 // 引入express
 const express = require('express');
-const { acceptsLanguages } = require('express/lib/request');
+const fs = require('fs').promises;
+
+// 引入 multer
+const multer = require('multer');
+// dest : 目的地，執行是在根目錄
+const upload = multer({ dest: 'tmp_uploads/' })
+
 
 // 建立web server物件
 const app = express();
@@ -42,7 +48,7 @@ app.get('/', function (req, res) {
 // });
 
 
-// TODO: 陣列排序
+// Advanced 取得JSON資料並排序
 app.get('/json-sales', (req,res)=>{
   const sales = require('./data/sales.json')
   // 排序之前先接收值
@@ -51,8 +57,8 @@ app.get('/json-sales', (req,res)=>{
   console.log(req.query);
   const col = req.query.orderByCol;
   const rule = req.query.orderByRule
-  console.log(col)
-  console.log(rule);
+  // console.log(col)
+  // console.log(rule);
   // 再傳送資料
   // 先過濾
   if (col==='age'&& rule==='asc'){
@@ -65,10 +71,27 @@ app.get('/json-sales', (req,res)=>{
     })
   }
 
+  if (col==='name' && rule==='asc'){
+    sales.sort(function(a,b){
+      return a[col] > b[col] ? 1 : -1;
+    })
+  } else if (col==='name' && rule==='desc'){
+    sales.sort(function(a,b){
+      return a[col] > b[col] ? -1 : 1;
+    })
+  }
 
-  
+  if (col==='id' && rule==='asc'){
+    sales.sort(function(a,b){
+      return a[col] > b[col] ? 1 : -1;
+    })
+  } else if (col==='id' && rule==='desc'){
+    sales.sort(function(a,b){
+      return a[col] > b[col] ? -1 : 1;
+    })
+  }
   console.log(sales);
-  res.render('json-sales', {sales});
+  res.render('json-sales',{col,rule,sales});
   
 })
   
@@ -80,7 +103,7 @@ app.get('/get-qs', function(req, res){
 });
 
 
-// 取得POST資料
+// try-post
 // middleware移到最前面Top level
 // const urlencodedParser = express.urlencoded({extended:false});
 app.post('/try-post',(req,res)=>{
@@ -88,12 +111,29 @@ app.post('/try-post',(req,res)=>{
 })
 
 
+// try-post-form
 app.get('/try-post-form',(req,res)=>{
   res.render('try-post-form');
 })
 app.post('/try-post-form',(req,res)=>{
   res.render('try-post-form', req.body);
 })
+
+
+// upload file
+app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
+  const types = ['image/jpeg', 'image/png','image/jpg']
+  const f = req.file;   // 辨識是否有上傳檔案
+  if(f && f.originalname){
+    if(types.includes(f.mimetype)){
+      await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
+      return res.redirect('/img/' + f.originalname);
+    }
+  }
+  // res.json(req.body);
+  // res.json(req.file);
+  res.send('bad');
+});
 
 
 // *** 此段放在所有路由設定的後面 ***
