@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>fetch 發送JSON</title>
+</head>
+<body>
+    <button onclick="sendData()">send</button>
+
+    <script>
+        const name = "Hello";
+        const gender = "female";
+        const age = 100;
+
+        function sendData(){
+            fetch('/try-post',{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/x-www-form-urlencoded'
+                },
+                body:`name=${name}&gender=${gender}&age=${age}`
+            }).then(r=>r.json())
+            .then(obj=>{
+                console.log(obj);
+            })
+        }
+    </script>
+</body>
+</html>
