@@ -3,6 +3,28 @@
 
 
 <div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">欄位</label>
+                  <select class="form-select" id="orderByCol" name="orderByCol">
+                    <option value="name">name</option>
+                    <option value="age">age</option>
+                    <option value="ID">ID</option>
+                  </select>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label">規則</label>
+                  <select class="form-select" id="orderByRule" name="orderByRule">
+                    <option value="asc">升冪排列</option>
+                    <option value="desc">降冪排列</option>
+                  </select>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">送出</button>
+              </form>
+        </div>
+    </div>
     <table class="table table-hover">
         <thead>
           <tr>

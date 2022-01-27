@@ -4,3 +4,11 @@ res.end()
 res.send()
 res.json()
 res.render()
+
+
+#輸入的資料
+req.query  #拿到query string (GET)
+req.body #拿到表單的資料，放在body (POST)
+
+
+middleware 中介軟體

@@ -3,6 +3,7 @@ console.log(process.env.NODE_ENV);
 require('dotenv').config();
 // 引入express
 const express = require('express');
+const { acceptsLanguages } = require('express/lib/request');
 
 // 建立web server物件
 const app = express();
@@ -10,7 +11,8 @@ const app = express();
 // 主程式設定註冊樣板引擎
 app.set('view engine', 'ejs');
 
-// 啟動路徑是專案資料夾，所以直接打public就可以找到該資料夾，引用靜態內容的順序要放在上面
+// Top Level Middleware
+app.use(express.urlencoded({extended:false}));
 app.use(express.static('public'));
 
 // app.get('/a.html', function (req, res) {
@@ -25,16 +27,49 @@ app.get('/', function (req, res) {
   res.render('home', {name:'Hello World'});
 });
 
+// 取得JSON資料
 // 如果require是json檔，可以不用寫副檔名，js檔也是
 // require要寫相對路徑
-app.get('/json-sales', function (req, res) {
-  const sales = require('./data/sales.json')  // require進來，自動json.parse轉變為陣列
-  // TODO: 陣列排序
-  console.log(sales);
-  // res.send(sales[0].name);
-  // res.send('200');
+// app.get('/json-sales', function (req, res) {
+//   const sales = require('./data/sales.json')  // require進來，自動json.parse轉變為陣列
+//   console.log(sales);
+//   // res.send(sales[0].name);
+//   // res.send('200');
+//   res.render('json-sales', {sales});
+// });
+
+
+// TODO: 陣列排序
+app.get('/json-sales', (req,res)=>{
+  const sales = require('./data/sales.json')
+  // 排序之前先接收值
+  // req.query.orderByCol = age
+  // req.query.orderByRule = desc
+  console.log(req.query);
+  const col = req.query.orderByCol;
+  const rule = req.query.orderByRule
+  console.log(col)
+  console.log(rule);
+  // 再傳送資料
+
   res.render('json-sales', {sales});
+  
+})
+  
+
+
+// 取得queryString資料
+app.get('/get-qs', function(req, res){
+  res.json(req.query);
 });
+
+
+// 取得POST資料
+// middleware移到最前面Top level
+// const urlencodedParser = express.urlencoded({extended:false});
+app.post('/try-post',(req,res)=>{
+  res.json(req.body);
+})
 
 
 // *** 此段放在所有路由設定的後面 ***
