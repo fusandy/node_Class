@@ -12,7 +12,10 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // Top Level Middleware
+// 判斷是否為urlencoded，是才處理，不是就跳過
 app.use(express.urlencoded({extended:false}));
+// 判斷是否為json，是才處理，不是就跳過
+app.use(express.json());
 app.use(express.static('public'));
 
 // app.get('/a.html', function (req, res) {
@@ -51,7 +54,20 @@ app.get('/json-sales', (req,res)=>{
   console.log(col)
   console.log(rule);
   // 再傳送資料
+  // 先過濾
+  if (col==='age'&& rule==='asc'){
+    sales.sort(function(a,b){
+        return a[col] - b[col];
+    })
+  } else if (col==='age'&& rule==='desc'){
+    sales.sort(function(a,b){
+      return (a[col] - b[col])*-1;
+    })
+  }
 
+
+  
+  console.log(sales);
   res.render('json-sales', {sales});
   
 })
