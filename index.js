@@ -88,6 +88,14 @@ app.post('/try-post',(req,res)=>{
 })
 
 
+app.get('/try-post-form',(req,res)=>{
+  res.render('try-post-form');
+})
+app.post('/try-post-form',(req,res)=>{
+  res.render('try-post-form', req.body);
+})
+
+
 // *** 此段放在所有路由設定的後面 ***
 // use : 接收所有的方法
 app.use((req,res)=>{
