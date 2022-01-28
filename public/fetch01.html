@@ -14,6 +14,8 @@
         const gender = "female";
         const age = 100;
 
+        // 如果傳的是FormData，會自動設定headers
+        // 這裡demo因為是傳字串，所以要加Content-Type
         function sendData(){
             fetch('/try-post',{
                 method:"POST",

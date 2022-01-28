@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>node+fetch新增/刪除圖片</title>
+    <link rel="stylesheet" href="fontawesome/css/all.css">
+    <style>
+        .img-unit {
+            position: relative;
+            display: inline-block;
+        }
+        .img-unit > img {
+            width: 200px;
+        }
+        .img-unit > .del-div{
+            position:absolute;
+            right: 0;
+            top: 0;
+            cursor:pointer;
+        }
+    </style>
+</head>
+<body>
+    <form name="form1" onsubmit="return false;" style="display: none;">
+        <input id="select_file" type="file" name="photos" multiple accept="image/*">   
+    </form>
+    <br>
+    <button onclick="select_file.click()">上傳圖片</button>
+    <br>
+    
+    <div id="imgs">
+    </div>
+
+<script>
+
+    const select_file = document.querySelector('#select_file');
+    const imgsDiv = document.querySelector('#imgs');
+    let imgData = [];
+
+    function imgUnitTpl(filename){
+        return `<div class="img-unit" data-file="${filename}">
+            <img src="/img/${filename}" alt="">
+            <div class="del-div">
+                <i class="fas fa-times-circle del-icon"></i>
+            </div>
+        </div>`;
+    }
+
+    function renderImgs(){
+        imgsDiv.innerHTML = ''; //先清空網頁畫面
+        for(let file of imgData){
+            imgsDiv.innerHTML += imgUnitTpl(file.filename);
+        }
+    };
+  
+    imgsDiv.addEventListener('click',function(event){
+        const t = event.target;
+
+        if(t.classList.contains('del-icon')){
+            const filename = t.closest('.img-unit').getAttribute('data-file');
+            console.log(filename);
+            // 移除不要的filename後重新設定給imgData
+            imgData = imgData.filter(function(element){
+                return element.filename !== filename
+            })
+            renderImgs();
+            /*
+            // 如果imgData陣列裡面有這個檔名
+            // array.indexOf() -> 回傳位置(索引值)
+            let loc = imgData.indexOf(filename);
+            // -1 代表找不到index
+            if(loc!==-1){
+                // 刪除
+                imgData.splice(loc,1);   //array.splice(索引值,刪幾個)
+                // 刪除後得到新的陣列，重新整理imgData
+                renderImgs();
+            }
+            */
+        }
+    });
+
+
+    select_file.addEventListener('change', doUpload);
+
+
+    function doUpload(){
+        const fd = new FormData(document.form1);
+        fetch('/try-uploads',{
+            method:'POST',
+            body:fd  
+       }).then(r=>r.json()).then(arr=>{
+           // 回傳的是array
+           console.log(arr);
+           imgData.push(...arr);
+           renderImgs();
+
+       })
+    }
+
+    
+    
+</script>
+</body>
+</html>

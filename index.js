@@ -140,8 +140,9 @@ app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
 
 // upload multiple files
 app.post('/try-uploads', upload.array('photos'), async(req, res)=>{
-  //TODO : 如何在送出req.files之前，進行資料處理，最後只送出mimetype filename size到前端
+  // 送出整個request，因為包含儲存路徑，會有安全性的問題
   // res.json(req.files);
+  // 因此如何在送出req.files之前，進行資料處理，最後只送出mimetype filename size到前端
   const newFile = req.files.map(function(element){
       return {
         "mimetype" : element.mimetype,
