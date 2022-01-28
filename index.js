@@ -8,8 +8,9 @@ const fs = require('fs').promises;
 // 引入 multer
 const multer = require('multer');
 // dest : 目的地，執行是在根目錄
-const upload = multer({ dest: 'tmp_uploads/' })
-
+// const upload = multer({ dest: 'tmp_uploads/' })
+// 引入upload-img模組
+const upload = require(__dirname+'/modules/upload-imgs')
 
 // 建立web server物件
 const app = express();
@@ -121,19 +122,20 @@ app.post('/try-post-form',(req,res)=>{
 
 // upload file
 app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
-  const types = ['image/jpeg', 'image/png','image/jpg']
-  const f = req.file;   // 辨識是否有上傳檔案
-  if(f && f.originalname){ // 如果有上傳檔案
-    if(types.includes(f.mimetype)){  // 且檔案類型符合
-      await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
-      return res.redirect('/img/' + f.originalname);
-    } else {   // 檔案類型不符合
-      return res.send('檔案類型不符');
-    }
-  }
-  // res.json(req.body);
-  // res.json(req.file);
-  res.send('沒有上傳檔案');
+
+  res.json(req.file);
+  // const types = ['image/jpeg', 'image/png','image/jpg']
+  // const f = req.file;   // 辨識是否有上傳檔案
+  // if(f && f.originalname){ // 如果有上傳檔案
+  //   if(types.includes(f.mimetype)){  // 且檔案類型符合
+  //     await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
+  //     return res.redirect('/img/' + f.originalname);
+  //   } else {   // 檔案類型不符合
+  //     return res.send('檔案類型不符');
+  //   }
+  // }
+  // // res.json(req.body);
+  // res.send('沒有上傳檔案');
 });
 
 
