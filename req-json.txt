@@ -1,0 +1,56 @@
+## res.json(req.file) upload single img
+{
+    "fieldname": "avatar",
+    "originalname": "bento.png",
+    "encoding": "7bit",
+    "mimetype": "image/png",
+    "destination": "C:\\Users\\fusan\\Documents\\GitHub\\node\\modules/../public/img",
+    "filename": "f1980f30-af62-4d4e-94f4-45f40dcff537.png",
+    "path": "C:\\Users\\fusan\\Documents\\GitHub\\node\\public\\img\\f1980f30-af62-4d4e-94f4-45f40dcff537.png",
+    "size": 561366
+}
+
+
+## res.json(req.files) upload multiple imgs 
+[
+    {
+        "fieldname": "photos",
+        "originalname": "3942_s.png",
+        "encoding": "7bit",
+        "mimetype": "image/png",
+        "destination": "C:\\Users\\fusan\\Documents\\GitHub\\node\\modules/../public/img",
+        "filename": "0050aa53-d23a-489d-bf8a-bd34ca3067f0.png",
+        "path": "C:\\Users\\fusan\\Documents\\GitHub\\node\\public\\img\\0050aa53-d23a-489d-bf8a-bd34ca3067f0.png",
+        "size": 125816
+    },
+    {
+        "fieldname": "photos",
+        "originalname": "3953_s.png",
+        "encoding": "7bit",
+        "mimetype": "image/png",
+        "destination": "C:\\Users\\fusan\\Documents\\GitHub\\node\\modules/../public/img",
+        "filename": "d578b6df-2e3b-4d2e-86a1-773f95f90bd0.png",
+        "path": "C:\\Users\\fusan\\Documents\\GitHub\\node\\public\\img\\d578b6df-2e3b-4d2e-86a1-773f95f90bd0.png",
+        "size": 130644
+    },
+    {
+        "fieldname": "photos",
+        "originalname": "beef.jpg",
+        "encoding": "7bit",
+        "mimetype": "image/jpeg",
+        "destination": "C:\\Users\\fusan\\Documents\\GitHub\\node\\modules/../public/img",
+        "filename": "7ab72760-0339-4f0a-9e4a-dcdd11d6475f.jpg",
+        "path": "C:\\Users\\fusan\\Documents\\GitHub\\node\\public\\img\\7ab72760-0339-4f0a-9e4a-dcdd11d6475f.jpg",
+        "size": 57974
+    },
+    {
+        "fieldname": "photos",
+        "originalname": "iAiOYLWExc_small.jpg",
+        "encoding": "7bit",
+        "mimetype": "image/jpeg",
+        "destination": "C:\\Users\\fusan\\Documents\\GitHub\\node\\modules/../public/img",
+        "filename": "9bdbbb7a-3fc3-4f0f-a9b6-2d2597ba66e7.jpg",
+        "path": "C:\\Users\\fusan\\Documents\\GitHub\\node\\public\\img\\9bdbbb7a-3fc3-4f0f-a9b6-2d2597ba66e7.jpg",
+        "size": 38315
+    }
+]

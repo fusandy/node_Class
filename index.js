@@ -122,20 +122,34 @@ app.post('/try-post-form',(req,res)=>{
 
 // upload file
 app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
-
   res.json(req.file);
-  // const types = ['image/jpeg', 'image/png','image/jpg']
-  // const f = req.file;   // 辨識是否有上傳檔案
-  // if(f && f.originalname){ // 如果有上傳檔案
-  //   if(types.includes(f.mimetype)){  // 且檔案類型符合
-  //     await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
-  //     return res.redirect('/img/' + f.originalname);
-  //   } else {   // 檔案類型不符合
-  //     return res.send('檔案類型不符');
-  //   }
-  // }
-  // // res.json(req.body);
-  // res.send('沒有上傳檔案');
+//   // const types = ['image/jpeg', 'image/png','image/jpg']
+//   // const f = req.file;   // 辨識是否有上傳檔案
+//   // if(f && f.originalname){ // 如果有上傳檔案
+//   //   if(types.includes(f.mimetype)){  // 且檔案類型符合
+//   //     await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
+//   //     return res.redirect('/img/' + f.originalname);
+//   //   } else {   // 檔案類型不符合
+//   //     return res.send('檔案類型不符');
+//   //   }
+//   // }
+//   // // res.json(req.body);
+//   // res.send('沒有上傳檔案');
+});
+
+
+// upload multiple files
+app.post('/try-uploads', upload.array('photos'), async(req, res)=>{
+  //TODO : 如何在送出req.files之前，進行資料處理，最後只送出mimetype filename size到前端
+  // res.json(req.files);
+  const newFile = req.files.map(function(element){
+      return {
+        "mimetype" : element.mimetype,
+        "filename" : element.filename,
+        "size" : element.size
+      }
+  })
+  res.json(newFile);
 });
 
 
