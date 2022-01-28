@@ -96,8 +96,7 @@ app.get('/json-sales', (req,res)=>{
 })
   
 
-
-// 取得queryString資料
+// 取得query String資料
 app.get('/get-qs', function(req, res){
   res.json(req.query);
 });
@@ -124,15 +123,17 @@ app.post('/try-post-form',(req,res)=>{
 app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
   const types = ['image/jpeg', 'image/png','image/jpg']
   const f = req.file;   // 辨識是否有上傳檔案
-  if(f && f.originalname){
-    if(types.includes(f.mimetype)){
+  if(f && f.originalname){ // 如果有上傳檔案
+    if(types.includes(f.mimetype)){  // 且檔案類型符合
       await fs.rename(f.path, __dirname+'/public/img/'+f.originalname);
       return res.redirect('/img/' + f.originalname);
+    } else {   // 檔案類型不符合
+      return res.send('檔案類型不符');
     }
   }
   // res.json(req.body);
   // res.json(req.file);
-  res.send('bad');
+  res.send('沒有上傳檔案');
 });
 
 

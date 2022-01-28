@@ -1,10 +1,13 @@
 # Response
 
 res.end()
+
+以下response內容的同時，會一起設定好檔頭(express套件的功能)，所以不要在重複使用
 res.send()
 res.json()
 res.render()
 res.redirect()轉向 同PHP header("Location: index_.php");
+
 
 
 #輸入的資料
@@ -15,3 +18,6 @@ req.body #拿到表單的資料，放在body (POST)
 query string的Content-Type也是urlencoded
 
 middleware 中介軟體
+
+
+
