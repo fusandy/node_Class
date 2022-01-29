@@ -14,6 +14,7 @@
         const gender = "female";
         const age = 100;
 
+        // 同理，urlencoded並不是字串也不是物件，所以要先轉成字串才能符合body的傳送格式
         function sendData(){
             fetch('/try-post',{
                 method:"POST",
