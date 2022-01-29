@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fetch 發送JSON</title>
+    <title>fetch urlencoded URLSearchParams</title>
 </head>
 <body>
     <button onclick="sendData()">send</button>
@@ -20,7 +20,7 @@
                 headers:{
                     'Content-Type':'application/x-www-form-urlencoded'
                 },
-                body: new URLParams({name,gender,age}).toString()
+                body: new URLSearchParams({name,gender,age}).toString()
             }).then(r=>r.json())
             .then(obj=>{
                 console.log(obj);

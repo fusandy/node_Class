@@ -27,7 +27,7 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
-                // FormData包成URLSearchParams之後，再轉成字串傳送                                                                                                                                                          
+                // FormData包成URLSearchParams之後，再轉成urlencoded格式傳送                                                                                                                                                          
                 body: new URLSearchParams(new FormData(document.form1)).toString()
             }).then(r=>r.json())
             .then(obj=>{

@@ -2,7 +2,8 @@
 
 res.end()
 
-以下response內容的同時，會一起設定好檔頭(express套件的功能)，所以不要在重複使用
+以下response內容的同時，會一起設定好檔頭(express套件的功能)，所以不要重複使用，不然會重複發送檔頭。
+如果一個路由處理器內需要多個response，除了最後一個，其他都要加return，代表執行完那行就結束並將結果回傳給客戶端
 res.send()
 res.json()
 res.render()
@@ -15,9 +16,10 @@ req.query  #拿到query string (GET)
 req.body #拿到表單的資料，放在body (POST)
 
 
-query string的Content-Type也是urlencoded
+#query string的Content-Type也是urlencoded
 
-middleware 中介軟體
+
+#middleware 中介軟體
 
 
 

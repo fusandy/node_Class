@@ -23,19 +23,23 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended:false}));
 // 判斷是否為json，是才處理，不是就跳過
 app.use(express.json());
+// 引入靜態內容的資料夾檔案(server不會再去修改的內容稱之為靜態內容)
 app.use(express.static('public'));
+
 
 // app.get('/a.html', function (req, res) {
 //   res.send(`<h2>動態內容</h2><p>${Math.random()}</p>`)
 // });
 
+
 // 路由
-// 方法要對、路徑要對，才會接收
+// EJS (樣板引擎)
 app.get('/', function (req, res) {
 
   // res.send('<h1>Hello World</h1>');
   res.render('home', {name:'Hello World'});
 });
+
 
 // 取得JSON資料
 // 如果require是json檔，可以不用寫副檔名，js檔也是
@@ -49,7 +53,7 @@ app.get('/', function (req, res) {
 // });
 
 
-// Advanced 取得JSON資料並排序
+// Advanced 取得JSON資料並排序 (switch case) ["name","age","id"]先過濾用戶輸入有沒有在這個陣列裡
 app.get('/json-sales', (req,res)=>{
   const sales = require('./data/sales.json')
   // 排序之前先接收值
@@ -107,8 +111,17 @@ app.get('/get-qs', function(req, res){
 // middleware移到最前面Top level
 // const urlencodedParser = express.urlencoded({extended:false});
 app.post('/try-post',(req,res)=>{
-  res.json(req.body);
+  res.json(req.body); // 如果要傳送json，可以使用res.json比較明確
+  // res.send(req.body); // 結果是一樣，傳送array或object，send會自動轉換成JSON字串
 })
+
+
+// app.post('/try-post',(req,res)=>{
+  // res.set('Content-Type','application/x-www-form-urlencoded');
+  // res.type('application/x-www-form-urlencoded')
+  // res.setHeader('Content-Type','text/plain')
+  // res.send(req.body);
+// })
 
 
 // try-post-form
@@ -121,6 +134,7 @@ app.post('/try-post-form',(req,res)=>{
 
 
 // upload file
+// upload.single('欄位名稱') => middleware
 app.post('/try-upload', upload.single('avatar'), async(req, res)=>{
   res.json(req.file);
 //   // const types = ['image/jpeg', 'image/png','image/jpg']
