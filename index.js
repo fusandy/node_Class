@@ -29,7 +29,6 @@ app.use(express.static('public'));
 // 自訂頂層的middleware
 app.use((req,res,next)=>{
   res.locals.nickname="Bob";
-  // 事情做完，呼叫next()，去執行下一件事情
   next();
 })
 
@@ -180,6 +179,7 @@ app.post('/try-uploads', upload.array('photos'), async(req, res)=>{
 app.get('/my-params1/*/*?', (req,res)=>{
   res.json(req.params);
 });
+// 多個路徑使用同個處理器處理
 app.get(['/xxx', '/yyy'], (req, res)=>{
   res.json({x:'y', url: req.url});
 });
@@ -192,19 +192,14 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
   // 從index=3開始切
   u = u.slice(3);
   // 用空字串取代掉所有的 -，g代表global
-  u = u.replace(/-/g, '');  // 也可以用 u = u.split('-').join('');
+  u = u.replace(/-/g, '');  // 也可以用 u = u.split('-').join(''); 也可以用 u = u.replaceAll('-','');
   res.json({mobile: u});
 });
 // 路由模組化
 // const admin2Router = require('./routes/admin2');
 // app.use(admin2Router);   // 當成middleware使用
 // 可以直接寫成
-app.use(require('./routes/admin2'));
-
-
-
-
-
+app.use('/admin2',require('./routes/admin2'));
 
 
 

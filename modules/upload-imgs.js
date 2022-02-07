@@ -14,7 +14,7 @@ const fileFilter = (req, file, cb)=>{
 
 const storage = multer.diskStorage({
     destination : (req, file, cb)=>{
-        cb(null, __dirname + '/../public/img')  // '/../public/img'是寫死的方法，可改寫在.env中
+        cb(null, __dirname + '/../public/img')  // '/../public/img'是寫死的方式，可改寫在.env中
     },
     filename: (req, file, cb)=>{
         cb(null, uuidv4() + extMap[file.mimetype])
