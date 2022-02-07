@@ -14,6 +14,8 @@
         const gender = "female";
         const age = 100;
         
+        // body的資料格式: string or object
+        // 這裡demo: 要求HTTP檔頭Content-Type是JSON，所以body要先將JSON資料轉換成字串，才能傳送
         function sendData(){
             fetch('/try-post',{
                 method:"POST",

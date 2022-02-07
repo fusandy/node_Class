@@ -16,7 +16,12 @@ req.query  #拿到query string (GET)
 req.body #拿到表單的資料，放在body (POST)
 
 
-#query string的Content-Type也是urlencoded
+#四種常見的 POST 提交數據方式Content-Type
+
+application/x-www-form-urlencoded : 最常見的POST提交數據的方式，提交的數據按照 key1=val1&key2=val2 的方式進行編碼
+application/json : JSON格式，支持比鍵值對復雜得多的結構化數據
+multipart/form-data : 又是一個常見的 POST 數據提交的方式。這種方式一般是使用表單上傳文件，必須讓form的enctyped等於這個值
+text/xml
 
 
 #middleware 中介軟體

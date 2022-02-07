@@ -61,7 +61,7 @@ app.get('/json-sales', (req,res)=>{
   // req.query.orderByRule = desc
   console.log(req.query);
   const col = req.query.orderByCol;
-  const rule = req.query.orderByRule
+  const rule = req.query.orderByRule;
   // console.log(col)
   // console.log(rule);
   // 再傳送資料
@@ -96,7 +96,7 @@ app.get('/json-sales', (req,res)=>{
     })
   }
   console.log(sales);
-  res.render('json-sales',{col,rule,sales});
+  res.render('json-sales',{sales, col:req.query.orderByCol, rule:req.query.orderByRule});
   
 })
   

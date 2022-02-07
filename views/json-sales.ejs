@@ -9,46 +9,15 @@
             <div class="mb-3">
               <label for="exampleInputEmail1" class="form-label">欄位</label>
               <select class="form-select" id="orderByCol" name="orderByCol">
-                <%# if(locals.col) { %>
-                  <%# switch (col) { %>
-                    <%# case 'name':  %>
-                      <!-- <option value="name" selected>name</option>
-                      <option value="age">age</option>
-                      <option value="id">ID</option> -->
-                    <%#  break; %>
-                    <%# case 'age':  %>
-                      <!-- <option value="name">name</option>
-                      <option value="age" selected>age</option>
-                      <option value="id">ID</option> -->
-                    <%#  break; %>
-                    <%# case 'id':  %>
-                      <!-- <option value="name">name</option>
-                      <option value="age">age</option>
-                      <option value="id" selected>ID</option> -->
-                    <%#  break; %>
-                  <%# } %>
-                    <option value="name">name</option>
-                    <option value="age">age</option>
-                    <option value="id">ID</option>
-                <%# } %>
+                <option value="name" <%= col == 'name'? 'selected':'' %>>name</option>
+                <option value="age" <%= col == 'age'? 'selected':'' %>>age</option>
+                <option value="id" <%= col == 'ID'? 'selected':'' %>>ID</option>
               </select>
             <div class="mb-3">
               <label for="exampleInputPassword1" class="form-label">規則</label>
               <select class="form-select" id="orderByRule" name="orderByRule">
-                <%# if(locals.rule) { %>
-                  <%# switch (rule) { %>
-                    <%# case 'asc':  %>
-                    <!-- <option value="asc" selected>升冪排列</option>
-                    <option value="desc">降冪排列</option> -->
-                    <%#  break; %>
-                    <%# case 'desc':  %>
-                    <!-- <option value="asc">升冪排列</option>
-                    <option value="desc" selected>降冪排列</option> -->
-                    <%#  break; %>
-                  <%# } %>
-                    <option value="asc">升冪排列</option>
-                    <option value="desc">降冪排列</option>
-                <%# } %>
+                <option value="asc" <%= rule == 'asc'? 'selected':'' %>>升冪排列</option>
+                <option value="desc" <%= rule == 'desc'? 'selected':'' %>>降冪排列</option>
               </select>
             </div>
             
