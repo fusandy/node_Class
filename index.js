@@ -26,6 +26,12 @@ app.use(express.urlencoded({extended:false}));
 app.use(express.json());
 // 引入靜態內容的資料夾檔案(server不會再去修改的內容稱之為靜態內容)
 app.use(express.static('public'));
+// 自訂頂層的middleware
+app.use((req,res,next)=>{
+  res.locals.nickname="Bob";
+  // 事情做完，呼叫next()，去執行下一件事情
+  next();
+})
 
 
 // app.get('/a.html', function (req, res) {
@@ -194,6 +200,12 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
 // app.use(admin2Router);   // 當成middleware使用
 // 可以直接寫成
 app.use(require('./routes/admin2'));
+
+
+
+
+
+
 
 
 // *** 此段放在所有路由設定的後面 ***
