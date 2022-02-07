@@ -3,6 +3,7 @@ console.log(process.env.NODE_ENV);
 require('dotenv').config();
 // 引入express
 const express = require('express');
+const req = require('express/lib/request');
 const fs = require('fs').promises;
 
 // 引入 multer
@@ -166,6 +167,33 @@ app.post('/try-uploads', upload.array('photos'), async(req, res)=>{
   })
   res.json(newFile);
 });
+
+
+// Router
+// 使用變數代稱設定路由
+app.get('/my-params1/*/*?', (req,res)=>{
+  res.json(req.params);
+});
+app.get(['/xxx', '/yyy'], (req, res)=>{
+  res.json({x:'y', url: req.url});
+});
+// 使用正規表示法設定路由
+// \是跳脫，i是指不分大小寫
+// 頭尾的 /^     $/ 是屬於regular expression的
+app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
+  //為了避免url後面有query string，用split將?以後的東西一律都不要
+  let u = req.url.split('?')[0];
+  // 從index=3開始切
+  u = u.slice(3);
+  // 用空字串取代掉所有的 -，g代表global
+  u = u.replace(/-/g, '');  // 也可以用 u = u.split('-').join('');
+  res.json({mobile: u});
+});
+// 路由模組化
+// const admin2Router = require('./routes/admin2');
+// app.use(admin2Router);   // 當成middleware使用
+// 可以直接寫成
+app.use(require('./routes/admin2'));
 
 
 // *** 此段放在所有路由設定的後面 ***
