@@ -51,6 +51,11 @@ app.use(session({
 // 自訂頂層的middleware
 app.use((req,res,next)=>{
   res.locals.nickname="Bob";
+
+
+  // template helper functions 樣版輔助函式
+  res.locals.toDateString = d => moment(d).format('YYYY-MM-DD');
+  res.locals.toDateTimeString = d => moment(d).format('YYYY-MM-DD HH:mm:ss');
   next();
 })
 
@@ -223,6 +228,8 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
 // 可以直接寫成
 app.use('/admin2',require('./routes/admin2'));
 
+// 路由baseURL
+app.use('/address-book',  require('./routes/address-book') );
 
 // SESSION
 app.get('/try-session', (req, res)=>{
