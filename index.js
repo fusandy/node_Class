@@ -8,8 +8,8 @@ const MysqlStore = require('express-mysql-session')(session);
 const req = require('express/lib/request');
 const fs = require('fs').promises;
 const moment = require('moment-timezone');
-const db = require('./modules/connect-db');
-const sessionStore = new MysqlStore({},db);
+const db = require('./modules/connect-db'); 
+const sessionStore = new MysqlStore({},db);  // 因為已用模組設定連線，這邊就給{空物件}
 
 // 引入 multer
 const multer = require('multer');
@@ -223,13 +223,15 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
   res.json({mobile: u});
 });
 // 路由模組化
-// const admin2Router = require('./routes/admin2');
-// app.use(admin2Router);   // 當成middleware使用
+/* const admin2Router = require('./routes/admin2'); */
+/* app.use(admin2Router);   // 當成middleware使用 */
 // 可以直接寫成
 app.use('/admin2',require('./routes/admin2'));
 
-// 路由baseURL
+
+/* ('路徑的前綴' , require('路由的檔案') */
 app.use('/address-book',  require('./routes/address-book') );
+
 
 // SESSION
 app.get('/try-session', (req, res)=>{

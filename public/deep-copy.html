@@ -14,11 +14,11 @@
         const p2 = { name:'bill', age:27};
         const p3 = { name:'david', age:18};
 
-        const p1a = {...p1};
+        const p1a = {...p1};  // 展開設定 : 淺層複製 (對應到同個記憶體)
         const p2a = {...p2};
         const p3a = {...p3};
 
-        // 狀況一: 結構循環
+        // 狀況一: 結構循環無法深層複製
         p1.next = p2;
         p2.next = p3;
         p3.next = p1;
@@ -35,10 +35,12 @@
         }
         console.log(JSON.stringify(p1a));
 
+
+
+        // 最快的深層複製法 : 物件轉JSON字串(JSON.stringify)再轉回物件(JSON.parse)，兩者就會分別對應到不同記憶體
         const p1b = JSON.parse(JSON.stringify(p1a)); // 深層複製
         const p1_ = {...p1};
-
-        p1_.name = 'Flora';
+        p1_.name = 'Flora';  // 淺層複製
         console.log(p1_);
 
         // https://awdr74100.github.io/2019-10-24-javascript-deepcopy/

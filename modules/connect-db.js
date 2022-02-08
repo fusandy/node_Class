@@ -8,8 +8,8 @@ const pool = mysql.createPool({
     password: process.env.DB_PASS,
     database: process.env.DB_DATABASE,
     waitForConnections: true,
-    connectionLimit: 5, // 最大連線數
-    queueLimit: 0
+    connectionLimit: 5, // 最大連線數，一般5個或10個
+    queueLimit: 0 // 排隊數量有沒有限制，0 代表沒限制
 })
 
 module.exports = pool.promise();

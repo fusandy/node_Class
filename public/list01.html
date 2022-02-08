@@ -5,9 +5,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AJAX get list data</title>
+    <link rel="stylesheet" href="bootstrap-5.1.1-dist/css/bootstrap.css">
 </head>
 <body>
+    <div class="container">
+        <div class="row">
+          <div class="col">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                      <th scope="col">姓名</th>
+                      <th scope="col">手機</th>
+                      <th scope="col">email</th>
+                      <th scope="col">生日</th>
+                      <th scope="col">地址</th>
+                </tr>
+              </thead>
+              <tbody>
+                  
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     
-    <!-- 用AJAX 去抓routes / address-book.js -->
+
+    <script src="./js/jquery-3.6.0.js"></script>
+    <script>
+        // 用AJAX GET取得query string，去抓address-book/api/list的資料
+        const tbody = $('tbody');
+        const rowTemplate = function(obj){
+            return `<tr>
+                <td>${ obj.sid }</td>
+                <td>${ obj.name }</td>
+                <td>${ obj.mobile }</td>
+                <td>${ obj.email }</td>
+                <td>${ obj.birthday }</td>
+                <td>${ obj.address }</td>
+            </tr>`
+        }
+
+        function getData(){
+            // 換頁
+            fetch('/address-book/api/list'+location.search)
+            .then(r=>r.json())
+            .then(obj=>{
+                console.log(obj)
+                
+                tbody.html(obj.rows.map(element => rowTemplate(element)).join(''));
+
+                // 為什麼這樣寫不行?
+                // tbody.html(
+                //     obj.rows.map(function(element){
+                //         rowTemplate(element)
+                //     }).join('')
+                // );
+            });
+        }
+        
+        getData();
+
+        // TODO: 分頁按鈕
+    </script>
+    
+    
 </body>
 </html>

@@ -1,4 +1,4 @@
-// 同PHP的資料列表
+// 同PHP處理資料列表
 
 const express = require('express');
 const db = require('./../modules/connect-db');
@@ -27,7 +27,7 @@ async function getListData(req, res){
     const t_sql = "SELECT COUNT(1) num FROM address_book";
     // db.query()執行sql抓出來的資料
     const [rs1] = await db.query(t_sql);
-    console.log([rs1]);   // [ { num: 128 } ]
+    console.log(rs1);   // [ { num: 128 } ]
     const totalRows = rs1[0].num;
 
     // 總頁數
@@ -43,22 +43,25 @@ async function getListData(req, res){
 
         // 插入變數，要改用backtick
         const sql = `SELECT * FROM address_book LIMIT ${perPage*(page-1)}, ${perPage} `;
+        // 陣列解開設定
         const [rs2] = await db.query(sql);
-        console.log([rs2])
+        // console.log(rs2);
 
         // list.ejs template中不呼叫toDateString，改在路由function先處理資料，確保下方路由輸出資料都一致
         rs2.forEach(element=>{
             element.birthday = res.locals.toDateString(element.birthday);
         })
+        console.log(rs2);
         output.rows = rs2;       
     }
 
     // res.json(output);
-    // template檔案位置，render使用相對位置，只要寫該支list.ejs在哪即可，無須寫views/address-book/list
+    
     return output;
 }
 
 router.get('/list', async (req, res)=>{
+    // template檔案位置，render只要寫該支list.ejs在哪即可，無須寫views/address-book/list
     res.render('address-book/list', await getListData(req, res));
 });
 router.get('/api/list', async (req, res)=>{

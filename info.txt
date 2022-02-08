@@ -6,7 +6,7 @@ res.end()
 如果一個路由處理器內需要多個response，除了最後一個，其他都要加return，代表執行完那行就結束並將結果回傳給客戶端
 res.send()
 res.json()
-res.render()
+res.render('template的檔案')
 res.redirect()轉向 同PHP header("Location: index_.php");
 
 
@@ -17,6 +17,11 @@ req.body   # 表單的資料，放在body (POST)
 req.params # 路徑上的變數代稱
 req.file   # multer檔案上傳
 req.files  # multer檔案上傳
+req.session 
+
+
+
+app.use('路徑的前綴' , require('路由的檔案')
 
 
 #四種常見的 POST 提交數據方式Content-Type
