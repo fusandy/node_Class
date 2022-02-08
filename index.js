@@ -1,10 +1,13 @@
 console.log(process.env.NODE_ENV);
 
 require('dotenv').config();
-// 引入express
+
 const express = require('express');
+const session = require('express-session');
 const req = require('express/lib/request');
 const fs = require('fs').promises;
+const moment = require('moment-timezone');
+const db = require('./modules/connect-db');
 
 // 引入 multer
 const multer = require('multer');
@@ -22,10 +25,26 @@ app.set('view engine', 'ejs');
 // Top Level Middleware
 // 判斷是否為urlencoded，是才處理，不是就跳過
 app.use(express.urlencoded({extended:false}));
+
 // 判斷是否為json，是才處理，不是就跳過
 app.use(express.json());
+
 // 引入靜態內容的資料夾檔案(server不會再去修改的內容稱之為靜態內容)
 app.use(express.static('public'));
+
+// 呼叫session
+app.use(session({
+  // 硬性規定須設定以下參數
+  saveUninitialized: false,
+  resave: false,
+  secret: 'rtyuigbhnjmklmnbvcxsertyu', //加密用的字串，隨便打即可，但長度可以長一點
+  cookie: { 
+    // session用的cookie，可不設定
+    maxAge: 1200000, 
+  } 
+  
+}))
+
 // 自訂頂層的middleware
 app.use((req,res,next)=>{
   res.locals.nickname="Bob";
@@ -202,6 +221,37 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
 app.use('/admin2',require('./routes/admin2'));
 
 
+// SESSION
+app.get('/try-session', (req, res)=>{
+  req.session.my_var = req.session.my_var || 0; // 預設為 0
+  req.session.my_var++;
+  res.json(req.session);
+});
+
+
+// moment
+// 定義時間格式 https://momentjs.com/docs/#/displaying/
+// 直接呼叫moment()，會得到當下的時間
+// format(格式)
+// tz('時區')
+app.get('/try-moment', (req, res)=>{
+    const fm = 'YYYY-MM-DD HH:mm:ss';
+    res.json({
+        'moment': moment().format(fm),
+        'moment in London': moment().tz('Europe/London').format(fm),
+        'cookie expire moment(+20min)': moment(req.session.cookie.expires).format(fm),
+        'cookie expire moment in London(+20min)': moment(req.session.cookie.expires).tz('Europe/London').format(fm),
+    });
+});
+
+
+// Connect MySQL
+app.get('/try-db', async (req, res)=>{
+    const sql = "SELECT * FROM member LIMIT 5";
+    const [rs, fields] = await db.query(sql);
+    res.json(rs);
+});
+
 
 // *** 此段放在所有路由設定的後面 ***
 // use : 接收所有的方法
@@ -210,6 +260,7 @@ app.use((req,res)=>{
   res.status(404);
   res.send(`<h1>找不到網頁</h1>`);
 })
+
 
 // server偵聽，偵聽之後的callback function可寫可不寫
 const port = process.env.PORT || 3001;
