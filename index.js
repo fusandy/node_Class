@@ -4,10 +4,12 @@ require('dotenv').config();
 
 const express = require('express');
 const session = require('express-session');
+const MysqlStore = require('express-mysql-session')(session);
 const req = require('express/lib/request');
 const fs = require('fs').promises;
 const moment = require('moment-timezone');
 const db = require('./modules/connect-db');
+const sessionStore = new MysqlStore({},db);
 
 // 引入 multer
 const multer = require('multer');
@@ -38,8 +40,9 @@ app.use(session({
   saveUninitialized: false,
   resave: false,
   secret: 'rtyuigbhnjmklmnbvcxsertyu', //加密用的字串，隨便打即可，但長度可以長一點
+  store: sessionStore,
   cookie: { 
-    // session用的cookie，可不設定
+    // cookie，可不設定
     maxAge: 1200000, 
   } 
   
@@ -247,7 +250,7 @@ app.get('/try-moment', (req, res)=>{
 
 // Connect MySQL
 app.get('/try-db', async (req, res)=>{
-    const sql = "SELECT * FROM member LIMIT 5";
+    const sql = "SELECT * FROM address_book LIMIT 5";
     const [rs, fields] = await db.query(sql);
     res.json(rs);
 });
