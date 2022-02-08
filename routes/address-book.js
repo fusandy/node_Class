@@ -4,7 +4,8 @@ const express = require('express');
 const db = require('./../modules/connect-db');
 const router = express.Router();
 
-router.get('/list', async (req, res)=>{
+// html輸出與API分開
+async function getListData(req, res){
     const perPage = 5; // 每一頁最多幾筆
     // 用戶要看第幾頁
     let page = req.query.page ? parseInt(req.query.page) : 1;
@@ -44,11 +45,24 @@ router.get('/list', async (req, res)=>{
         const sql = `SELECT * FROM address_book LIMIT ${perPage*(page-1)}, ${perPage} `;
         const [rs2] = await db.query(sql);
         console.log([rs2])
-        output.rows = rs2;
+
+        // list.ejs template中不呼叫toDateString，改在路由function先處理資料，確保下方路由輸出資料都一致
+        rs2.forEach(element=>{
+            element.birthday = res.locals.toDateString(element.birthday);
+        })
+        output.rows = rs2;       
     }
 
     // res.json(output);
     // template檔案位置，render使用相對位置，只要寫該支list.ejs在哪即可，無須寫views/address-book/list
-    res.render('address-book/list', output);
+    return output;
+}
+
+router.get('/list', async (req, res)=>{
+    res.render('address-book/list', await getListData(req, res));
 });
+router.get('/api/list', async (req, res)=>{
+    res.json(await getListData(req, res));
+});
+
 module.exports = router;
