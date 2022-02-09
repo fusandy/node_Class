@@ -11,6 +11,13 @@
     <div class="container">
         <div class="row">
           <div class="col">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <!-- <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
+              </ul>
+            </nav>
             <table class="table">
               <thead>
                 <tr>
@@ -35,6 +42,17 @@
     <script>
         // 用AJAX GET取得query string，去抓address-book/api/list的資料
         const tbody = $('tbody');
+        const pagination = $('.pagination');
+        const prePaginationTemplate = function(p){
+          return `<li class="page-item"><a class="page-link" href="?page=${p-1}">Previous</a></li>`;
+        }
+        const pageTemplate = function(p){
+          return `<li class="page-item"><a class="page-link" href="?page=${p}">${p}</a></li>`;
+        }
+        const nextPaginationTemplate = function(p){
+          return `<li class="page-item"><a class="page-link" href="?page=${p+1}">Next</a></li>`;
+        }
+
         const rowTemplate = function(obj){
             return `<tr>
                 <td>${ obj.sid }</td>
@@ -61,8 +79,21 @@
                 });
                 console.log(newObj);
                 const data = newObj.join('');
-
                 tbody.html(data);
+
+                let pageNum = '';
+                for(let i=1; i<=obj.totalPages; i++){
+                  pageNum += pageTemplate(i);
+                }
+                pagination.html(pageNum);
+
+                const pageNumFirst = $('.page-item:first');
+                const pageNumLast = $('.page-item:last');
+                pageNumFirst.before(prePaginationTemplate(obj.page));
+                pageNumLast.after(nextPaginationTemplate(obj.page));
+                console.log(pageNumFirst);
+                console.log(pageNumLast);
+                
             });
         }
         

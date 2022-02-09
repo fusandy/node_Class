@@ -34,8 +34,6 @@ async function getListData(req, res){
         conditions.search = search;
     }
 
-
-
     // output 先定義要輸出的內容
     const output = {
         // success: false,
