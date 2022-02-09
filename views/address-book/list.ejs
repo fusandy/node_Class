@@ -4,6 +4,26 @@
 <div class="container">
   <div class="row">
     <div class="col">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination">
+          <li class="page-item <%= page===1 ? 'disabled' : '' %>">
+            <a class="page-link" href="?<%- new URLSearchParams({...conditions, page: page-1}) %>">Prev</a>
+          </li>
+          <% for(let i=1; i<=totalPages; i++){ %>
+          <li class="page-item <%= page === i ? 'active':''%> ">
+            <a class="page-link" href="?<%- new URLSearchParams({...conditions, page: i}) %>"><%= i %></a>
+          </li>
+          <% } %>
+          <li class="page-item <%= page===totalPages ? 'disabled' : '' %>">
+            <a class="page-link" href="?<%- new URLSearchParams({...conditions, page: page+1}) %>">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
       <table class="table">
         <thead>
           <tr>
@@ -16,14 +36,14 @@
           </tr>
         </thead>
         <tbody>
-          <% for(let i of rows){ %>
+          <% for(let o of rows){ %>
             <tr>
-              <td><%= i.sid %></td>
-              <td><%= i.name %></td>
-              <td><%= i.mobile %></td>
-              <td><%= i.email %></td>
-              <td><%= i.birthday %></td>
-              <td><%= i.address %></td>
+              <td><%= o.sid %></td>
+              <td><%= o.name %></td>
+              <td><%= o.mobile %></td>
+              <td><%= o.email %></td>
+              <td><%= o.birthday %></td>
+              <td><%= o.address %></td>
             </tr>
             <% } %>
         </tbody>
@@ -33,4 +53,10 @@
 </div>
 
 <%- include('../parts/scripts') %>
+<script>
+  // 除錯，路由return ouput內的變數會掛在locals底下，F12 console輸入locals檢查
+  // 傳到template的變數都會變成locals的屬性
+  /* 輸出不要作跳脫 <%-  %> /*
+  const locals = <%- JSON.stringify(locals) %>;
+</script>
 <%- include('../parts/html-foot') %>
