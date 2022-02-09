@@ -53,14 +53,16 @@
             .then(obj=>{
                 console.log(obj)
                 
-                tbody.html(obj.rows.map(element => rowTemplate(element)).join(''));
+                // tbody.html(obj.rows.map(element => rowTemplate(element)).join(''));
 
-                // 為什麼這樣寫不行?
-                // tbody.html(
-                //     obj.rows.map(function(element){
-                //         rowTemplate(element)
-                //     }).join('')
-                // );
+                // 土法煉鋼一步一步來
+                const newObj = obj.rows.map(function(element){
+                  return rowTemplate(element)
+                });
+                console.log(newObj);
+                const data = newObj.join('');
+
+                tbody.html(data);
             });
         }
         

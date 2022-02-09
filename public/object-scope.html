@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>object scope "this"</title>
+</head>
+<body>
+    <script>
+        // this:Javascript裡的this看的是究竟是誰調用該函式
+        
+        const shape = {
+            attr1 : 10,
+            
+            meth1: function(){
+                console.log('this of meth1:', this);
+                return this.attr1;
+            },  // ans. 10
+            
+            // 箭頭函式外如果沒有再包一層function，則this為window
+            // meth2 vs meth4
+            meth2: ()=> {
+                console.log('this of meth2:', this);
+                return this.attr1*2;
+            },  // ans. NaN
+
+            meth3() {
+                console.log('this of meth3:', this);
+                return this.attr1*3;
+            },  // ans. 30
+
+            attr2: this.attr1,   // this : window 
+            
+            attr3: this,         // this : window 
+
+            meth4: function(){
+                return (()=>{
+                    console.log('this of meth4->()=>{} :', this);
+                    return this.attr1*4;
+                })();
+            },  // ans. 40
+        }
+/*
+
+shape.attr1
+shape.meth1()
+shape.meth2()
+
+*/
+    </script>
+</body>
+</html>
