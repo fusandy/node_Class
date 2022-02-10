@@ -40,11 +40,38 @@
 
 <%- include('../parts/scripts') %>
 <script>
-  function checkForm(){
-      // 資料檢查
+   function checkForm(){
+
+    // 資料檢查
+    const fd = new FormData(document.addForm);
+    // 可以列舉的類型都可以用...展開設定
+    console.log([...fd]);
+
+    for(let i of fd){
+        console.log(i);
+    }
 
 
-
+      /*
+      const usp = new URLSearchParams(fd);
+      console.log(usp.toString());
+      console.log(usp.entries());
+      console.log({...usp});
+      */
   }
+
+    // 測試 joi
+    const Joi = joi;
+    const schema = Joi.object({
+      username: Joi.string().alphanum().min(6).max(20).required(),
+
+      age: Joi.number().required(),
+    });
+
+
+    console.log( schema.validate({username:'abk', age:'xyz'}));
+    // 跑完全部再一起show錯誤訊息
+    console.log( schema.validate({username:'abk', age:'xyz'}, {abortEarly: false}));
+    console.log( schema.validate({username:'abckjkljl', age:'25'}));
 </script>
 <%- include('../parts/html-foot') %>

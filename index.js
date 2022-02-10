@@ -33,6 +33,9 @@ app.use(express.json());
 
 // 引入靜態內容的資料夾檔案(server不會再去修改的內容稱之為靜態內容)
 app.use(express.static('public'));
+// 加了前綴，找檔案的路徑比較明確，不加也可以，那檔案就會在根目錄
+app.use('/joi', express.static('node_modules/joi/dist/'));
+
 
 // 呼叫session
 app.use(session({

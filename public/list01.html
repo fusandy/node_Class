@@ -44,13 +44,17 @@
         const tbody = $('tbody');
         const pagination = $('.pagination');
         const prePaginationTemplate = function(p){
-          return `<li class="page-item"><a class="page-link" href="?page=${p-1}">Previous</a></li>`;
+          if (p===1){
+            return `<li class="page-item disabled"><a class="page-link" href="?page=${p-1}">Previous</a></li>`;
+          } else {
+            return `<li class="page-item"><a class="page-link" href="?page=${p-1}">Previous</a></li>`;
+          } 
         }
         const pageTemplate = function(p){
           return `<li class="page-item"><a class="page-link" href="?page=${p}">${p}</a></li>`;
         }
         const nextPaginationTemplate = function(p){
-          return `<li class="page-item"><a class="page-link" href="?page=${p+1}">Next</a></li>`;
+            return `<li class="page-item"><a class="page-link" href="?page=${p+1}">Next</a></li>`;
         }
 
         const rowTemplate = function(obj){
@@ -89,7 +93,8 @@
 
                 const pageNumFirst = $('.page-item:first');
                 const pageNumLast = $('.page-item:last');
-                pageNumFirst.before(prePaginationTemplate(obj.page));
+                
+                pageNumFirst.before(prePaginationTemplate(obj.page))
                 pageNumLast.after(nextPaginationTemplate(obj.page));
                 console.log(pageNumFirst);
                 console.log(pageNumLast);
