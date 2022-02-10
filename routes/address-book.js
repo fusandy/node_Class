@@ -1,8 +1,7 @@
-// 同PHP處理資料列表
-
 const express = require('express');
 const db = require('./../modules/connect-db');
 const router = express.Router();
+const upload = require('./../modules/upload-imgs');
 
 // html輸出與API分開
 async function getListData(req, res){
@@ -105,7 +104,20 @@ router.get('/api/list', async (req, res)=>{
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
 })
+
+// 'Content-Type': 'multipart fromdata' 需要呼叫middleware
+router.post('/add2', upload.none(), async (req, res)=>{
+    res.json(req.body);
+});
+// 'Content-Type': 'application/json'
+// 'Content-Type': 'application/x-www-form-urlencoded'
 router.post('/add', async (req, res)=>{
     
+    const sql = "INSERT INTO address_book SET ?";
+    const insertData = {...req.body, created_at:new Date()};
+    const [insertResult] = await db.query(sql, [insertData]);
+    console.log(insertResult);
+    res.json(insertResult);
 })
+
 module.exports = router;
