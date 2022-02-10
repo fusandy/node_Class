@@ -28,22 +28,26 @@
         <thead>
           <tr>
             <th scope="col">#</th>
+                <th><i class="fas fa-trash-alt"></i></th>
                 <th scope="col">姓名</th>
                 <th scope="col">手機</th>
                 <th scope="col">email</th>
                 <th scope="col">生日</th>
                 <th scope="col">地址</th>
+                <th><i class="fas fa-edit"></i></th>
           </tr>
         </thead>
         <tbody>
           <% for(let o of rows){ %>
             <tr>
+              <th><a href="/address-book/delete/<%= o.sid %>" onclick="return confirm('請問要刪除第<%= o.sid %>筆資料嗎?')"><i class="fas fa-trash-alt"></i></a></th>
               <td><%= o.sid %></td>
               <td><%= o.name %></td>
               <td><%= o.mobile %></td>
               <td><%= o.email %></td>
               <td><%= o.birthday %></td>
               <td><%= o.address %></td>
+              <th><a href="/address-book/edit/<%= o.sid %>"><i class="fas fa-edit"></i></a></th>
             </tr>
             <% } %>
         </tbody>

@@ -79,7 +79,13 @@ async function getListData(req, res){
 
         // list.ejs template中不呼叫toDateString，改在路由function先處理資料，確保下方路由輸出資料都一致
         rs2.forEach(element=>{
-            element.birthday = res.locals.toDateString(element.birthday);
+            let str = res.locals.toDateString(element.birthday);
+            // element.birthday = res.locals.toDateString(element.birthday);
+            if (str === 'Invalid date'){
+                element.birthday = '用戶尚未輸入生日';
+            } else {
+                element.birthday = str;
+            }
         })
         console.log(rs2);
         output.rows = rs2;       
@@ -94,30 +100,104 @@ async function getListData(req, res){
 router.get('/', async (req, res)=>{
     res.redirect('/address-book/list');
 });
+
+// list頁畫面呈現路由
 router.get('/list', async (req, res)=>{
     // template檔案位置，render只要寫該支list.ejs在哪即可，無須寫views/address-book/list
     res.render('address-book/list', await getListData(req, res));
 });
+
+
 router.get('/api/list', async (req, res)=>{
     res.json(await getListData(req, res));
 });
+
+// 新增頁畫面呈現路由
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
 })
+
 
 // 'Content-Type': 'multipart fromdata' 需要呼叫middleware
 router.post('/add2', upload.none(), async (req, res)=>{
     res.json(req.body);
 });
+
+// 新增路由
 // 'Content-Type': 'application/json'
 // 'Content-Type': 'application/x-www-form-urlencoded'
 router.post('/add', async (req, res)=>{
+
+    const output = {
+        success:false,
+        error:'',
+    }
     
+    // 前端的隱藏欄位若對應不上後端資料庫欄位名稱會報錯
+    /*
     const sql = "INSERT INTO address_book SET ?";
     const insertData = {...req.body, created_at:new Date()};
     const [insertResult] = await db.query(sql, [insertData]);
-    console.log(insertResult);
-    res.json(insertResult);
+    console.log(insertResult); 
+    */
+
+    // 建議寫法
+    // TODO: 資料格式檢查
+    const sql = "INSERT INTO `address_book`(`name`, `email`, `mobile`, `birthday`, `address`, `created_at`) VALUES (?,?,?,?,?,NOW())";
+    const [insertResult] = await db.query(sql, [
+        req.body.name,
+        req.body.email,
+        req.body.mobile,
+        req.body.birthday || null,
+        req.body.address,    
+    ]);
+    console.log(insertResult); 
+    output.success = !!insertResult.affectedRows;   // 如果affectedRows有值代表寫入成功，!!轉成步林值就是true
+    output.result = insertResult.affectedRows;
+    res.json(output);
 })
+
+
+// 刪除路由
+router.get('/delete/:sid', async (req, res)=>{
+    const sql = "DELETE FROM address_book WHERE sid=?";
+    const [deleteResult] = await db.query(sql, [req.params.sid]);
+    res.redirect('/address-book/list');
+});
+
+
+// 編輯前有沒有拿到sid的資料的路由
+router.get('/edit/:sid', async (req, res)=>{
+    const sql = "SELECT * FROM address_book WHERE sid=?";
+    const [editResult] = await db.query(sql, [req.params.sid]);
+
+    if(editResult.length === 0){
+        return res.redirect('/address-book/list')
+    }
+
+    res.render('address-book/edit', editResult[0]);
+});
+// 編輯完提交表單的路由
+router.post('/edit/:sid', async (req, res)=>{
+    const output = {
+        success:false,
+        error:'',
+    }
+
+    const sql = "UPDATE address_book SET ? WHERE sid=?";
+    const [editResult] = await db.query(sql, [
+        req.body,
+        req.params.sid
+    ]);
+    output.success = !! editResult.changedRows;
+    console.log('output.success',output.success)
+    output.result = editResult;
+
+    res.json(output)
+
+    // changedRows 變化的筆數 (假設資料沒修改直接提交，ans=0)
+    // affectedRows 找到的筆數 (假設資料沒修改直接提交，ans=1)
+});
+
 
 module.exports = router;

@@ -1,5 +1,3 @@
-console.log(process.env.NODE_ENV);
-
 require('dotenv').config();
 
 const express = require('express');
@@ -10,6 +8,7 @@ const fs = require('fs').promises;
 const moment = require('moment-timezone');
 const db = require('./modules/connect-db'); 
 const sessionStore = new MysqlStore({},db);  // 因為已用模組設定連線，這邊就給{空物件}
+const cors = require('cors');
 
 // 引入 multer
 const multer = require('multer');
@@ -25,6 +24,8 @@ const app = express();
 app.set('view engine', 'ejs');
 
 // Top Level Middleware
+// 允許瀏覽器跨網域資源共用
+app.use(cors());
 // 判斷是否為urlencoded，是才處理，不是就跳過
 app.use(express.urlencoded({extended:false}));
 
@@ -54,8 +55,6 @@ app.use(session({
 // 自訂頂層的middleware
 app.use((req,res,next)=>{
   res.locals.nickname="Bob";
-
-
   // template helper functions 樣版輔助函式
   res.locals.toDateString = d => moment(d).format('YYYY-MM-DD');
   res.locals.toDateTimeString = d => moment(d).format('YYYY-MM-DD HH:mm:ss');
