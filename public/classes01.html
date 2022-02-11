@@ -9,6 +9,7 @@
 <body>
     <script>
         // 舊的物件導向 oop
+        // 誰呼叫function，this就是誰 (但不適用在單層的箭頭函式)
 
         function Person01(name, age){
             this.name = name;
@@ -27,6 +28,7 @@
         Person01.prototype.getInfo2 = function(){
             return JSON.stringify(this.getInfo());
         }
+        
         console.log('p1:', p1);
         console.log('p1.getInfo2():',p1.getInfo2());
 

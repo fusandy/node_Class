@@ -9,6 +9,8 @@ const moment = require('moment-timezone');
 const db = require('./modules/connect-db'); 
 const sessionStore = new MysqlStore({},db);  // 因為已用模組設定連線，這邊就給{空物件}
 const cors = require('cors');
+const fetch = require('node-fetch');
+const axios = require('axios');
 
 // 引入 multer
 const multer = require('multer');
@@ -264,6 +266,24 @@ app.get('/try-db', async (req, res)=>{
     const sql = "SELECT * FROM address_book LIMIT 5";
     const [rs, fields] = await db.query(sql);
     res.json(rs);
+});
+
+
+// node-fetch 拜訪外部網站
+app.get('/yahoo', async (req, res)=>{
+  fetch('https://tw.yahoo.com/')
+      .then(r=>r.text())
+      .then(txt=>{
+          res.send(txt);
+      });
+});
+
+
+// axios 拜訪外部網站
+app.get('/yahoo2', async (req, res)=>{
+  const response = await axios.get('https://tw.yahoo.com/');
+  console.log(response);
+  res.send(response.data);
 });
 
 

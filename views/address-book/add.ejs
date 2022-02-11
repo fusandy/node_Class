@@ -56,9 +56,13 @@
    
     function sendData(){
 
-    const name = document.querySelector('#name').value;
-    const email = document.querySelector('#email').value;
-    const mobile = document.querySelector('#mobile').value;
+    const name = document.querySelector('#name');
+    const email = document.querySelector('#email');
+    const mobile = document.querySelector('#mobile');
+
+    const nameValue = name.value;
+    const emailValue = email.value;
+    const mobileValue = mobile.value;
 
     // console.log('name.value',name)
     // console.log('email.value',email)
@@ -72,8 +76,8 @@
         mobile: /^09\d{2}-?\d{3}-?\d{3}$/,
     });
     
-    console.log('除錯結果:', schema.validate({name:`${name}`, email: `${email}`, mobile: `${mobile}`}, {abortEarly: false}));
-    const errorInfo = schema.validate({name:`${name}`, email: `${email}`, mobile: `${mobile}`}, {abortEarly: false});
+    console.log('除錯結果:', schema.validate({name:`${nameValue}`, email: `${emailValue}`, mobile: `${mobileValue}`}, {abortEarly: false}));
+    const errorInfo = schema.validate({name:`${nameValue}`, email: `${emailValue}`, mobile: `${mobileValue}`}, {abortEarly: false});
 
     if(errorInfo['error']){
       isPass = false;

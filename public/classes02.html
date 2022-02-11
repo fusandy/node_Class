@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>classes02</title>
+</head>
+<body>
+    <script>
+        // ES6的物件導向 oop
+        
+        class Animal {
+            // 建構函式
+            constructor(name){
+                this.name = name;
+                Animal._count = Animal._count || 0;
+                Animal._count ++ ;
+            }
+            move(){
+                return 'Move!';
+            }
+            info(){
+                return this.name;
+            }
+            toString(){
+                return 'Name:' + this.name;
+            }
+            // 靜態方法屬於類型的方法，只屬於Animal class
+            // 開頭宣告static
+            // 此時不能用this，因為this代表個體
+            // 與classes01.html的靜態方法目的一樣，但是語法不同，有static就不能用this
+            static sayHello(){
+                return Animal._count || 0;
+            }
+        }
+
+        // 繼承的時候，父類的constructor要先寫在子類的最前面
+        class Human extends Animal {
+            constructor(name,gender){
+                super(name); // 父類的constructor要寫最前面
+                this.gender = gender;  // 再設定自身的constructor
+            }
+
+            // 覆蓋，但是父類的move()仍然存在，只要呼叫super就可以使用
+            move(){
+                return 'RUNNNNN!';
+                // return super.move() + 'RUNNNNN!';
+            }
+        }
+
+        
+
+        const a1 = new Animal('Cat');
+        console.log('a1', a1);
+        console.log('a1.info():', a1.info());
+        console.log('\'\'+ a1:', '' + a1 );  // '' + a1 相當於呼叫 toString()的方法
+        console.log('a1 instanceof Animal:', a1 instanceof Animal);
+        
+        console.log('--------------')
+
+        const h1 = new Human();
+        console.log('h1:', h1);
+        console.log('h1.info():', h1.info());
+        // console.log(h1.toString());
+        // console.log(h1 instanceof Animal);
+
+    </script>
+</body>
+</html>
