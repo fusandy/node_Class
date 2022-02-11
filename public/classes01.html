@@ -50,13 +50,13 @@
 
         // Function 類型的 apply(), call(), bind()
         // https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function
-        // const myObj = {};
+        const myObj = {};
 
-        // function abc(a, b){
-        //     return this.toString() + a + b;
-        // }
+        function abc(a, b){
+            return this.toString() + a + b;
+        }
 
-        // console.log( abc.apply(myObj, ['a', 'b']));
+        console.log( abc.apply(myObj, ['a', 'b']));
 
     </script>
 </body>

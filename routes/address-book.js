@@ -112,6 +112,7 @@ router.get('/api/list', async (req, res)=>{
     res.json(await getListData(req, res));
 });
 
+
 // 新增頁畫面呈現路由
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
@@ -132,6 +133,12 @@ router.post('/add', async (req, res)=>{
         success:false,
         error:'',
     }
+
+    req.body.name ? req.body.name : '';
+    req.body.email ? req.body.email : '';
+    req.body.mobile ? req.body.mobile : '';
+
+    body('')
     
     // 前端的隱藏欄位若對應不上後端資料庫欄位名稱會報錯
     /*
@@ -162,7 +169,8 @@ router.post('/add', async (req, res)=>{
 router.get('/delete/:sid', async (req, res)=>{
     const sql = "DELETE FROM address_book WHERE sid=?";
     const [deleteResult] = await db.query(sql, [req.params.sid]);
-    res.redirect('/address-book/list');
+    backURL = req.get('Referer') || '/address-book/list';
+    res.redirect(backURL);
 });
 
 
@@ -171,7 +179,9 @@ router.get('/edit/:sid', async (req, res)=>{
     const sql = "SELECT * FROM address_book WHERE sid=?";
     const [editResult] = await db.query(sql, [req.params.sid]);
 
+    // 判斷有沒有拿到該筆sid的資料
     if(editResult.length === 0){
+        //沒有就跳轉回list page
         return res.redirect('/address-book/list')
     }
 
