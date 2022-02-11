@@ -44,8 +44,8 @@
 
             // 覆蓋，但是父類的move()仍然存在，只要呼叫super就可以使用
             move(){
-                return 'RUNNNNN!';
-                // return super.move() + 'RUNNNNN!';
+                // return 'RUNNNNN!';
+                return super.move() + 'RUNNNNN!';
             }
         }
 
@@ -55,15 +55,16 @@
         console.log('a1', a1);
         console.log('a1.info():', a1.info());
         console.log('\'\'+ a1:', '' + a1 );  // '' + a1 相當於呼叫 toString()的方法
-        console.log('a1 instanceof Animal:', a1 instanceof Animal);
-        
+        console.log('a1 instanceof Animal:', a1 instanceof Animal); // 驗證a1有沒有Animal的constructor
+        console.log('a1.move():', a1.move());
         console.log('--------------')
 
-        const h1 = new Human();
+        const h1 = new Human('Dog','male');
         console.log('h1:', h1);
-        console.log('h1.info():', h1.info());
-        // console.log(h1.toString());
-        // console.log(h1 instanceof Animal);
+        console.log('h1.info():', h1.info());  // 繼承到Animal的方法
+        console.log('h1.toString():', h1.toString());
+        console.log('h1 instanceof Animal:', h1 instanceof Animal);
+        console.log('h1.move():', h1.move());
 
     </script>
 </body>

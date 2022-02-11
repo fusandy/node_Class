@@ -10,9 +10,9 @@
     <pre id="data"></pre>
 
     <script>
-        // cross origin 無法傳送cookie
+        // 不同domain，可以拜訪，但無法傳送cookie
 
-        fetch('http://127.0.0.1:3000/try-session',).then(r=>r.json())
+        fetch('http://localhost:3000/try-session',).then(r=>r.json())
         .then(obj=>{
             console.log(obj);
             document.querySelector('#data').innerText = JSON.stringify(obj, null, 4);

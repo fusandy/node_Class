@@ -27,6 +27,14 @@ app.set('view engine', 'ejs');
 
 // Top Level Middleware
 // 允許瀏覽器跨網域資源共用
+// const corsOptions = {
+//   credentials: true,
+//   origin: function(origin, cb){
+//       console.log('origin:', {origin});
+//       cb(null, true);
+//   }
+// };
+// app.use(cors(corsOptions));
 app.use(cors());
 // 判斷是否為urlencoded，是才處理，不是就跳過
 app.use(express.urlencoded({extended:false}));

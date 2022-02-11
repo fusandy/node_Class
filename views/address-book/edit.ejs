@@ -41,25 +41,18 @@
 <%- include('../parts/scripts') %>
 <script>
    function checkForm(){
-
-    // 資料格式 : multipart formdata
     const fd = new FormData(document.addForm);
-    // 可以列舉的類型都可以用...展開設定
     // console.log([...fd]);
 
-    // 資料格式 : object，JSON.stringify(dataObj)轉JSON字串就可以傳送了
     const dataObj = {};
     for(let i of fd){
-     // 把陣列的值放進物件裡
       dataObj[i[0]] = i[1];
     }
-    console.log({dataObj});
+    // console.log({dataObj});
     
-    // 資料格式 : urlencoded
     const usp = new URLSearchParams(fd).toString();
-    console.log(usp);
+    // console.log(usp);
 
-    // submit完傳給自己，網址一樣是address-book/add，路徑一樣，就可以不用寫，只是方法不一樣
     fetch('', {
         method: 'POST',
         body: JSON.stringify(dataObj),

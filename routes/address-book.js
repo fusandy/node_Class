@@ -134,11 +134,11 @@ router.post('/add', async (req, res)=>{
         error:'',
     }
 
-    req.body.name ? req.body.name : '';
-    req.body.email ? req.body.email : '';
-    req.body.mobile ? req.body.mobile : '';
+    // req.body.name ? req.body.name : '';
+    // req.body.email ? req.body.email : '';
+    // req.body.mobile ? req.body.mobile : '';
 
-    body('')
+    // body('')
     
     // 前端的隱藏欄位若對應不上後端資料庫欄位名稱會報錯
     /*

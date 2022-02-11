@@ -76,14 +76,25 @@
         mobile: /^09\d{2}-?\d{3}-?\d{3}$/,
     });
     
-    console.log('除錯結果:', schema.validate({name:`${nameValue}`, email: `${emailValue}`, mobile: `${mobileValue}`}, {abortEarly: false}));
+    //console.log('除錯結果:', schema.validate({name:`${nameValue}`, email: `${emailValue}`, mobile: `${mobileValue}`}, {abortEarly: false}));
     const errorInfo = schema.validate({name:`${nameValue}`, email: `${emailValue}`, mobile: `${mobileValue}`}, {abortEarly: false});
 
     if(errorInfo['error']){
       isPass = false;
-      alert(errorInfo.error);
+      // alert(errorInfo.error);
+      //console.log(errorInfo.error.details);
+      const errorDetails = errorInfo.error.details;
+      errorDetails.forEach(ele => {
+        console.log(ele.context['key'] + ele.message);
+        
+        // let a = document.querySelector(`#${ele.context['key']}`);
+        // a.nextElementSibling.innerHTML = ele.message;
+        $(`#${ele.context['key']}`).next('.form-text').text(ele.message);
+      
+      });
     }
-    
+
+
     console.log('isPass:', isPass)
     if(isPass){
         // 資料格式 : multipart formdata
