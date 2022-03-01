@@ -11,6 +11,7 @@ const sessionStore = new MysqlStore({},db);  // 因為已用模組設定連線�
 const cors = require('cors');
 const fetch = require('node-fetch');
 const axios = require('axios');
+const nodemailer = require('nodemailer');
 
 // 引入 multer
 const multer = require('multer');
@@ -292,6 +293,43 @@ app.get('/yahoo2', async (req, res)=>{
   const response = await axios.get('https://tw.yahoo.com/');
   console.log(response);
   res.send(response.data);
+});
+
+
+// send auto mail
+app.post('/mailtest', (req, res) => {
+  console.log(req.body)
+  const emailAddress = req.body.email
+
+  const output = {
+    success: false,
+    error:'',
+  }
+
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'disneydisney.watch@gmail.com',
+      pass: 'tapatfivrpgehvjx'
+    }
+  });
+  
+  let mailOptions = {
+    from: 'disneydisney.watch@gmail.com',
+    to: emailAddress,
+    subject: '活動報名通知',
+    text: '感謝您報名XXX活動，活動日期為XXX，活動時間為XXX，敬請準時參加!'
+  };
+  
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      output.error = error
+      return res.send(output);
+    } else {
+      output.success = true
+      return res.send(output);
+    }
+  });
 });
 
 

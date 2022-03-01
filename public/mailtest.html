@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mailtest</title>
+    <link rel="stylesheet" href="./bootstrap-5.1.1-dist/css/bootstrap.css">
+</head>
+<body>
+    <div class="container">
+        <div class="col-6">
+            <form name="testForm" onsubmit="sendData(); return false;">
+                <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function sendData(){
+            const fd = new FormData(document.testForm);
+
+            const dataObj = {};
+            for(let i of fd){
+            dataObj[i[0]] = i[1];
+            }
+            console.log(dataObj)
+
+
+            fetch('/mailtest', {
+                method: 'POST',
+                body: JSON.stringify(dataObj),
+                headers:{
+                'Content-Type': 'application/json'
+                }
+            }).then(r=>r.json())
+            .then(obj=>{
+                console.log(obj);
+                if(obj.success){
+                    alert('報名成功!')
+                }
+            })
+        }
+    </script>
+</body>
+</html>
