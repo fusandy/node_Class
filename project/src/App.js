@@ -1,15 +1,13 @@
-import logo from './logo.svg';
-import './App.css';
-import {useEffect, useState} from 'react';
-import config from './Config'
-import { BrowserRouter as Router, Route, Link, Switch, useLocation } from "react-router-dom"
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
+import config from "./Config";
+import { useLocation, useHistory } from "react-router-dom";
 
 function App() {
+  const history = useHistory();
+  const location = useLocation();
   const [data, setData] = useState({});
-  // const {page} = useParams()
-  const location = useLocation()
-  console.log(location.search)
-  
 
   // 資料形式
   // {
@@ -30,64 +28,119 @@ function App() {
   // }
 
   // 將載入資料寫成function
-  const getData = async (page=1) => {
-      // const res = await fetch(config.AB_List)
-      // const obj = await res.json()
-      const obj = await (await fetch(config.AB_List+`?page=${page}`)).json()
-      console.log(obj)
-      setData(obj)
-  }
+  
+  const getData = async (page) => {
+    // const res = await fetch(config.AB_List)
+    // const obj = await res.json()
+    const obj = await (await fetch(config.AB_List + `?page=${page}`)).json();
+    console.log(obj);
+    setData(obj);
+  };
+
+  // useHistory ONLY : Go to page
+  // const gotoPage = (page=1)=>{
+  //   getData(page);
+  //   history.push(`?page=${page}`);
+  // }
+
+  // useEffect(() => {
+  //   getData();
+  // }, []);
 
   useEffect(()=>{
-    getData()
-  },[])
+    const page = new URLSearchParams(location.search).get('page');
+    console.log('page:', page)
+    getData(page || 1);   
+  },[location.search])
+
 
   // 判斷是否有拿到data
-  const renderData = (data)=>{
-    if(data.rows && data.rows.length){
-      return data.rows.map( v => 
-      <tr key={'data'+v.sid}>
-        <th>{v.sid}</th>
-        <td>{v.name}</td>
-        <td>{v.email}</td>
-        <td>{v.mobile}</td>
-        <td>{v.birthday}</td>
-      </tr>  )
-    }else{
+  const renderData = (data) => {
+    if (data.rows && data.rows.length) {
+      return data.rows.map((v) => (
+        <tr key={"data" + v.sid}>
+          <th>{v.sid}</th>
+          <td>{v.name}</td>
+          <td>{v.email}</td>
+          <td>{v.mobile}</td>
+          <td>{v.birthday}</td>
+        </tr>
+      ));
+    } else {
       return (
-        <tr><th></th></tr>
+        <tr>
+          <th></th>
+        </tr>
       );
     }
-  }
+  };
 
   return (
-
     <div className="App">
       <div className="container">
-      {/* 判斷是否有獲得data */}
-      { (data.rows && data.rows.length) ? 
-        ( <nav aria-label="Page navigation example">
-          <ul className="pagination">
-            <li className={data.page ===1 ? "disabled page-item" : "page-item"}>
-              <a className="page-link" href="#/" onClick={()=>{ getData(data.page-1)}}>Previous</a>
-            </li>
-            {Array(data.totalPages).fill(1).map((v,i)=>{
-              return (
-                <li key={i} className={(data.page===i+1) ? 'page-item active' : "page-item"}>
-                <a className="page-link" href="#/" onClick={()=>{getData(i+1)}}>{i+1}</a>
-                </li>
-                // Todo: a連結改寫成link to
-              )
-            })}
-            <li className={data.page === data.totalPages ? "disabled page-item" : "page-item"}>
-              <a className="page-link" href="#/" onClick={()=>{getData(data.page+1)}}>Next</a>
-            </li>
-          </ul>
-        </nav> )
-        : ''
-      }
+        {/* 判斷是否有獲得data */}
+        {data.rows && data.rows.length ? (
+          <nav aria-label="Page navigation example">
+            <ul className="pagination">
+              <li
+                className={data.page === 1 ? "disabled page-item" : "page-item"}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => {
+                    history.push(`?page=${data.page-1}`);
+                  }}
+                >
+                  Previous
+                </button>
+              </li>
+              {Array(data.totalPages)
+                .fill(1)
+                .map((v, i) => {
+                  return (
+                    <li
+                      key={i}
+                      className={
+                        data.page === i + 1 ? "page-item active" : "page-item"
+                      }
+                    >
+                      <button
+                        className="page-link"
+                        href="#/"
+                        onClick={() => {
+                          history.push(`?page=${i+1}`);
+                        }}
+                      >
+                        {i + 1}
+                      </button>
+                    </li>
+                    // Todo: a連結改寫成link to
+                  );
+                })}
+              <li
+                className={
+                  data.page === data.totalPages
+                    ? "disabled page-item"
+                    : "page-item"
+                }
+              >
+                <button
+                  className="page-link"
+                  href="#/"
+                  onClick={() => {
+                    history.push(`?page=${data.page+1}`);
+                  }}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
+        ) : (
+          ""
+        )}
       </div>
-      <div className='container'>
+      <div className="container">
         <table className="table table-striped">
           <thead>
             <tr>
@@ -98,9 +151,7 @@ function App() {
               <th scope="col">birthday</th>
             </tr>
           </thead>
-          <tbody>
-            {renderData(data)}
-          </tbody>
+          <tbody>{renderData(data)}</tbody>
         </table>
       </div>
     </div>

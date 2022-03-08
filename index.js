@@ -12,6 +12,8 @@ const cors = require('cors');
 const fetch = require('node-fetch');
 const axios = require('axios');
 const nodemailer = require('nodemailer');
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken');
 
 // 引入 multer
 const multer = require('multer');
@@ -240,6 +242,7 @@ app.get(/^\/m\/09\d{2}-?\d{3}-?\d{3}$/i, (req, res)=>{
 /* app.use(admin2Router);   // 當成middleware使用 */
 // 可以直接寫成
 app.use('/admin2',require('./routes/admin2'));
+app.use('/uploadFromReact',require('./routes/uploadFromReact'));
 
 
 /* ('路徑的前綴' , require('路由的檔案') */
@@ -317,8 +320,8 @@ app.post('/mailtest', (req, res) => {
   let mailOptions = {
     from: 'disneydisney.watch@gmail.com',
     to: emailAddress,
-    subject: '活動報名通知',
-    text: '感謝您報名XXX活動，活動日期為XXX，活動時間為XXX，敬請準時參加!'
+    subject: '報名通知',
+    text: '感謝您的報名，XXXX活動將於XXXX舉行，敬請準時報到參加!謝謝'
   };
   
   transporter.sendMail(mailOptions, function(error, info){
@@ -331,6 +334,52 @@ app.post('/mailtest', (req, res) => {
     }
   });
 });
+
+
+// 0307: JSON　Web Token address-book login
+// 登入的表單
+app.get('/login', async(req,res)=>{
+  res.render('login')
+})
+// 送出檢查帳號密碼
+app.post('/login', async(req,res)=>{
+  // res.json(req.body)
+  // req.body.account
+  // req.body.password
+  const output = {
+    success:false,
+    error:'',
+    info:'',
+    token:'',
+    code:0,
+  }
+
+  const [rs] = await db.query('SELECT * FROM admins WHERE account=?', [req.body.account])
+  // 如果查無帳號，則length=0，!反轉變成true,進入if流程控制
+  if(!rs.length){
+    output.error = '帳號錯誤';
+    output.code = 401;
+    return res.json(output);
+  }
+
+  // 找到的話，比對密碼是否一致
+  const row = rs[0];
+  const compareResult = await bcrypt.compare(req.body.password, row.password)
+  if(!compareResult){
+    output.error = '密碼錯誤';
+    output.code = 402;
+    return res.json(output);
+  }
+
+  // 如果帳號密碼都正確，把output回傳給前端
+  // 先解構row，假設找到資料後要回傳 {帳號、大頭貼、暱稱} 給前端
+  const { sid, account, avatar, nickname } = row;
+  output.success = true;
+  output.info = { account, avatar, nickname };
+  // 驗證成功後，生成token回傳給前端，後續前端要把token存在用戶的localstorage
+  output.token = jwt.sign({ sid, account }, process.env.JWT_KEY);
+  res.json(output);
+})
 
 
 // *** 此段放在所有路由設定的後面 ***

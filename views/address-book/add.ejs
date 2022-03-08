@@ -104,6 +104,8 @@
 
         // 資料格式 : object，JSON.stringify(dataObj)轉JSON字串就可以傳送了
         // 把陣列的值放進物件裡
+        // ex. fd的i => ['name', 'David']
+        // i的index=0當dataObj的key，i的index=1當dataObj的key，
         const dataObj = {};
         for(let i of fd){
           dataObj[i[0]] = i[1];

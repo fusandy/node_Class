@@ -1,0 +1,68 @@
+<%- include('parts/html-head') %> <%- include('parts/navbar') %>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <form name="form1" onsubmit="sendForm(event)">
+        <div class="mb-3">
+          <label for="account" class="form-label">account</label>
+          <input type="text" class="form-control" id="account" name="account" />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%- include('parts/scripts') %>
+<script>
+  async function sendForm() {
+    event.preventDefault();
+    // 上傳檔案要用formData，json與urlencoded不能上傳檔案
+
+    // const usp = new URLSearchParams(new FormData(document.form1));
+    // console.log('usp.toString():', usp.toString())
+
+    // 資料格式 : object，JSON.stringify(dataObj)轉JSON字串就可以傳送了
+    // 把陣列的值放進物件裡
+    // ex. fd的i => [ ['account', 'David'], ['password', '123'] ]
+    // i的index=0當dataObj的key，i的index=1當dataObj的key，
+    const fd = new FormData(document.form1);
+    const dataObj = {};
+    for (let i of fd) {
+      dataObj[i[0]] = i[1];
+    }
+    console.log({ dataObj });
+
+    const response = await fetch("", {
+      method: "POST",
+      headers: {
+        // "Content-Type": "application/x-www-form-urlencoded",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataObj), //usp.toString(),
+    });
+
+    const obj = await response.json();
+    console.log("obj", obj);
+
+    if (obj.success) {
+      localStorage.setItem("admin_info", JSON.stringify(obj.info));
+      localStorage.setItem("admin_token", obj.token);
+
+      alert("Login Succeed.");
+    } else {
+      alert(obj.error || "Login Failed.");
+    }
+  }
+</script>
+<%- include('parts/html-foot') %>

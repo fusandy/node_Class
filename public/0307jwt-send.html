@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jwt send</title>
+</head>
+<body>
+    <button onclick="sendData()">send</button>
+    <script>
+        const admin_token = localStorage.getItem('admin_token')
+
+        async function sendData(){
+            if(!admin_token){
+                alert('沒有登入')
+                return;
+            }
+
+            const response = await fetch('/address-book/api/list', {
+                method:"GET",
+                headers:{
+                    Authorization: 'Bearer '+admin_token,
+                    // Authorization的類型有很多種，這邊示範傳送token類型
+                    // Bearer後要有一個空格，識別用
+                }
+            })
+
+            const obj = await response.JSON();
+            console.log(obj)
+        }
+    </script>
+</body>
+</html>
