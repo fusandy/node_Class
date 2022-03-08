@@ -113,6 +113,18 @@ router.get('/api/list', async (req, res)=>{
 });
 
 
+// 0308 token處理驗證
+router.get('/api/auth-list', async(req,res)=>{
+    if(res.locals.auth && res.locals.auth.account){
+        return res.json({...await getListData(req,res),
+        account: res.locals.auth.account
+    });
+    }else{
+        res.json({success:false, error:'沒有授權'})
+    }
+})
+
+
 // 新增頁畫面呈現路由
 router.get('/add', async (req, res)=>{
     res.render('address-book/add');
@@ -208,6 +220,7 @@ router.post('/edit/:sid', async (req, res)=>{
     // changedRows 變化的筆數 (假設資料沒修改直接提交，ans=0)
     // affectedRows 找到的筆數 (假設資料沒修改直接提交，ans=1)
 });
+
 
 
 module.exports = router;

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>try catch01</title>
+</head>
+<body>
+    <script>
+        // 假設: 如果在開發的時候，不確定外面來的值能不能作JSON解析，可以先用try catch debug
+        
+        let obj = null;
+        try{
+            // 故意寫錯語法，讓try catch跳錯誤
+            obj = JSON.parse('{"a":1,}')
+        }catch(ex){
+            console.log(ex.constructor.name)
+            console.log(ex.message)
+            console.log({ex}) // 把錯誤包成物件(可做可不做)
+        }
+        console.log(obj);
+    </script>
+</body>
+</html>

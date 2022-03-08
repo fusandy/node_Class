@@ -71,6 +71,28 @@ app.use((req,res,next)=>{
   // template helper functions 樣版輔助函式
   res.locals.toDateString = d => moment(d).format('YYYY-MM-DD');
   res.locals.toDateTimeString = d => moment(d).format('YYYY-MM-DD HH:mm:ss');
+
+  // 0308 token from request headers
+  res.locals.auth = null ; // 自訂的變數，設定有沒有身分驗證，預設值是null
+  let auth = req.get('Authorization')
+  console.log('auth:',auth)
+  // 如果auth有值，且有包含Bearer 的字串，位置在index為0
+  if(auth && auth.indexOf('Bearer ')===0){
+    // 字串從index=7切到最後面
+    auth = auth.slice(7)
+    console.log('auth.slice(7):',auth)
+    try{
+      const payload = jwt.verify(auth, process.env.JWT_KEY)
+      console.log('payload:', payload)
+      // 如果驗證token合法，則把解析的物件放進res.locals.auth自定義變數中
+      res.locals.auth = payload;
+      console.log('res.locals.auth:', res.locals.auth)
+    }catch(ex){
+
+    }
+  }
+
+
   next();
 })
 

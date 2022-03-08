@@ -1,6 +1,5 @@
 // React 上傳圖片的router
 const express = require('express');
-const res = require('express/lib/response');
 const db = require('./../modules/connect-db');
 const router = express.Router();
 const upload = require('./../modules/upload-imgs');
