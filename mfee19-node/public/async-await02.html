@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    function myPromise(p) {
+        return new Promise((resolve, reject) => {
+            const rnd = 300 + Math.floor(Math.random()*1000);
+            setTimeout(() => {
+                resolve({p, rnd});
+            }, rnd);
+        });
+    }
+
+    (async ()=>{
+        const str = 'say-hello---';
+        for(let i=0; i< str.length; i++){
+            console.log(await myPromise(str[i]));
+        }
+    })();
+
+    (async ()=>{
+        const r1 = await myPromise('bill');
+        console.log(r1);
+        const r2 = await myPromise('peter');
+        console.log(r2);
+        const r3 = await myPromise('david');
+        console.log(r3);
+        const r4 = await myPromise('aaron');
+        console.log(r4);
+    })();
+
+
+
+</script>
+
+</body>
+</html>

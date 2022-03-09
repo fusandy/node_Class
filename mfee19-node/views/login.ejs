@@ -1,0 +1,62 @@
+<%- include('parts/html-head') %>
+<%- include('parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card" >
+                <div class="card-body">
+                    <h5 class="card-title">登入</h5>
+
+                    <form name="form1" onsubmit="checkForm(); return false;">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">密碼</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">登入</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<%- include('parts/scripts') %>
+<script>
+    const email = document.querySelector('#email');
+
+    function checkForm(){
+
+        // TODO: 欄位檢查
+
+
+        const fd = new FormData(document.form1);
+
+        fetch('', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams(fd).toString(),
+        }).then(r=>r.json()).then(obj=>{
+            console.log(JSON.stringify(obj, null, 4));
+            if(obj.success){
+                alert('登入成功');
+                location.href ='/';
+            } else {
+                alert('登入失敗\n' + (obj.error || ''));
+            }
+        });
+
+
+    }
+
+
+</script>
+<%- include('parts/html-foot') %>

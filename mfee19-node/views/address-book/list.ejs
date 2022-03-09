@@ -1,0 +1,97 @@
+<%- include('../parts/html-head') %>
+<%- include('../parts/navbar') %>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <%
+                    const usp = new URLSearchParams();
+                    if(keyword){
+                        usp.set('keyword', keyword);
+                    }
+                    usp.set('page', page-1);
+                    %>
+                    <li class="page-item <%= page<=1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="?<%= usp.toString() %>">Previous</a>
+                    </li>
+                    <% for(let i=page-5; i<page+5; i++){ %>
+                        <% if(i>=1 && i<=totalPages){
+                            usp.set('page', i);
+                        %>
+                        <li class="page-item <%= page===i ? 'active' : '' %>">
+                            <a class="page-link" href="?<%= usp.toString() %>"><%= i %></a>
+                        </li>
+                        <% } %>
+                    <% } %>
+                    <% usp.set('page', page+1); %>
+                    <li class="page-item <%= page>=totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="?<%= usp.toString() %>">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th scope="col"><i class="fas fa-trash-alt"></i></th>
+                    <th scope="col">#</th>
+                    <th scope="col">姓名</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">手機</th>
+                    <th scope="col">生日</th>
+                    <th scope="col">地址</th>
+                    <th scope="col"><i class="fas fa-edit"></i></th>
+                </tr>
+                </thead>
+                <tbody>
+                <% for(let i of rows){ %>
+                <tr>
+                    <td>
+                        <a href="javascript: delete_it(<%= i.sid %>)">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </td>
+                    <td><%= i.sid %></td>
+                    <td><%= i.name %></td>
+                    <td><%= i.email %></td>
+                    <td><%= i.mobile %></td>
+                    <td><%= dateToDateString(i.birthday) %></td>
+                    <td><%= i.address %></td>
+                    <td>
+                        <a href="/address-book/edit/<%= i.sid %>">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                    </td>
+                </tr>
+                <% } %>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+
+</div>
+<%- include('../parts/scripts') %>
+<script>
+    async function delete_it(sid){
+        if(confirm(`確定要刪除編號為 ${sid} 的項目嗎？`)){
+            // location.href = '/address-book/delete/' + sid;
+
+            const r = await fetch('/address-book/delete/' + sid, {
+                method: 'DELETE'
+            });
+            const obj = await r.json();
+            console.log(obj);
+            // location.reload(); // 重新載入頁面
+        }
+    }
+
+</script>
+<%- include('../parts/html-foot') %>

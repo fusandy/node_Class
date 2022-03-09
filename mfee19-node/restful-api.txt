@@ -1,0 +1,109 @@
+
+
+傳統的作法
+    列表:
+    /products?page=12
+    /products/list/12
+
+    新增:
+    /products/add
+    /products/create
+
+    修改:
+    /products/17/edit
+    /products/17/update
+    /products/edit/17
+    /products/update/17
+
+RESTful API 作法：
+    列表:
+        GET /product
+
+    讀取單筆:
+        GET /product/:id
+
+    新增:
+        POST /product
+
+    修改:
+        PUT /product/:id
+
+    刪除:
+        DELETE /product/:id
+
+---------------------- 以 address-book 為例說明
+/api/address-book
+    GET: 取得列表資料
+    POST: 新增資料
+
+/api/address-book/:sid
+    GET: 取得單項資料
+    PUT: 修改單項資料
+    DELETE: 刪除單項資料
+
+---------------------- 分組
+A. 運動相關的，主要賣鞋子 (舉辦活動功能)
+B. 寵物整合平台:
+C. 醫療相關,  連鎖藥局線上購物平台 (處方簽領藥及症狀篩檢)
+D. 食物相關
+E. 線上影音教學平台 (語言類的)
+F. 平面為主設計師商品作品平台
+----------------------
+SELECT p.sid, p.`bookname`, c.`name` `cate_name` FROM `products` p JOIN `categories` c ON p.`category_sid`=c.sid;
+
+CREATE VIEW `VIEW_PRODUCT_CATE` AS
+SELECT p.sid, p.`bookname`, c.`name` `cate_name` FROM `products` p JOIN `categories` c ON p.`category_sid`=c.sid;
+
+----------------------
+購物車:
+    session
+    db
+    * localStorage
+----------------------
+加入的商品:
+    全部的資料 (不好的作法)
+    商品ID (比較好的作法)
+----------------------
+購物車功能: CRUD
+    加入商品
+    讀取購物車清單
+    變更數量
+    移除商品 (清空)
+
+DB table:
+    id (PK)
+    store_id (商店ID, 沒有要實作,多台購物車)
+    member_id (FK)
+    product_id (FK)
+    quantity
+    created_at
+-- --------------------
+CREATE TABLE `carts` (
+  `sid` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+ALTER TABLE `carts`
+  ADD PRIMARY KEY (`sid`),
+  ADD KEY `member_id` (`member_id`),
+  ADD KEY `product_id` (`product_id`);
+
+ALTER TABLE `carts`
+  MODIFY `sid` int(11) NOT NULL AUTO_INCREMENT;
+-- --------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
